@@ -73,6 +73,7 @@ export default function ImageComparisonPage() {
         <Box sx={{ mt: 2 }}>
           <Button 
             variant="contained" 
+            id="back-button"
             sx={{
               border: '1px solid #000', 
               borderRadius: '10px', 

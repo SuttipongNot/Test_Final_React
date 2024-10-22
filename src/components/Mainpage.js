@@ -40,7 +40,7 @@ export default function Minipage() {
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between"> {/* จัดเรียงให้เป็นแถว */}
           {/* กล่องสำหรับอัปโหลดรูป */}
-          <Box display="flex" flexDirection="column" alignItems="flex-start" sx={{ marginRight: 4 }}>
+          <Box  id="upload-box" display="flex" flexDirection="column" alignItems="flex-start" sx={{ marginRight: 4 }}>
             <Card
               sx={{
                 width: 350,
@@ -80,6 +80,7 @@ export default function Minipage() {
             {/* ปุ่มทำนาย */}
             {imagePreviewUrl && ( // ตรวจสอบว่ามีการเลือกรูปภาพแล้วหรือไม่
               <Button
+                id="predict-button" // เพิ่ม ID ให้กับปุ่ม
                 variant="contained"
                 color="secondary"
                 sx={{

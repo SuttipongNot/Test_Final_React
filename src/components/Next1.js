@@ -40,6 +40,7 @@ export default function CustomPage() {
           {/* ปุ่มหน้าของคุณเหมือนดาราคนไหน */}
           <Button
             variant="contained"
+            id="predict-dara-button"
             sx={{
               borderRadius: '10px',
               border: '1px solid #000', // เพิ่มกรอบสีดำ
@@ -61,6 +62,7 @@ export default function CustomPage() {
           {/* ปุ่มคุณอายุเท่าไหร่ */}
           <Button
             variant="contained"
+            id="predict-age-button"
             sx={{
               borderRadius: '10px',
               border: '1px solid #000', // เพิ่มกรอบสีดำ
@@ -84,6 +86,7 @@ export default function CustomPage() {
         <Box sx={{ mt: 4 }}>
           <Button
             variant="contained"
+            id="back-button"
             sx={{
               borderRadius: '10px',
               border: '1px solid #000', // เพิ่มกรอบสีดำ

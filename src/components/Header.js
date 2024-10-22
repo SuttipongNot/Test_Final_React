@@ -34,6 +34,7 @@ export default function Header() {
         <Toolbar>
           <Box
             component="img"
+            id="Logohome"
             src={logo}  // ใช้โลโก้ที่นำเข้า
             alt="Logo"
             onClick={handleHomeClick}
@@ -48,6 +49,7 @@ export default function Header() {
             <Button
               variant="contained"
               color="secondary"
+              id="Logout"
               sx={{
                 fontWeight: 'bold',
                 fontSize: '16px',
@@ -68,6 +70,7 @@ export default function Header() {
             <Button
               variant="contained"
               color="secondary"
+              id="Login"
               sx={{
                 fontWeight: 'bold',
                 fontSize: '16px',
