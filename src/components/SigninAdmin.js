@@ -8,28 +8,28 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
-
+ 
 const defaultTheme = createTheme();
-
+ 
 export default function SignInAdmin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate(); 
-
+  const navigate = useNavigate();
+ 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+ 
     try {
-      const response = await axios.post(process.env.REACT_APP_BASE_URL + '/login',
+      const response = await axios.post(process.env.REACT_APP_BASE_URL + '/api/login',
         {
           username,
           password
         }
       );
-
+ 
       const result = response.data;
       alert(result['message']);
-
+ 
       if (result['status'] === true) {
         localStorage.setItem('token', result['token']);
         if (result['Role_ID'] === 1 || result['Role_ID'] === 2) {
@@ -43,7 +43,7 @@ export default function SignInAdmin() {
       alert('เกิดข้อผิดพลาดในการเชื่อมต่อกับเซิร์ฟเวอร์');
     }
   };
-
+ 
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box
@@ -72,7 +72,7 @@ export default function SignInAdmin() {
             <Typography component="h1" variant="h4" sx={{ fontWeight: 'bold', mb: 3, color: '#333' }}>
               Who Are You ?
             </Typography>
-
+ 
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%' }}>
               <TextField
                 margin="normal"
