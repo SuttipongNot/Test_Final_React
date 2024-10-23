@@ -1,27 +1,48 @@
 import React from 'react';
 import { AppBar, Toolbar, Button, Box } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
-import logo from './image/logoweb.png';  // นำเข้ารูปภาพโลโก้
- 
+import logo from './image/logoweb.jpg';  // นำเข้ารูปภาพโลโก้
+
 export default function Header() {
   const navigate = useNavigate();
   const location = useLocation();
- 
+
   const handleSignInClick = () => {
     navigate('/signinadmin');
   };
- 
-  const handleLogoutClick = () => {
-    localStorage.removeItem('token');
-    navigate('/signinadmin');
+
+  const handleLogoutClick = async () => {
+    // เรียก API เพื่อ logout
+    try {
+      const response = await fetch(process.env.REACT_APP_BASE_URL + '/api/logout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      
+      const result = await response.json();
+      if (result.status) {
+        // หลังจาก logout สำเร็จ ทำการนำทางไปหน้า mainpage และใช้ replace
+        localStorage.removeItem('token');
+        navigate('/mainpage', { replace: true });
+
+        // รีเซ็ตประวัติการท่องเว็บเพื่อป้องกันการย้อนกลับ
+        window.history.pushState(null, '', window.location.href);
+        window.onpopstate = function () {
+          window.history.go(1); // บล็อกการย้อนกลับ
+        };
+      }
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
   };
- 
+
   const handleHomeClick = () => {
     navigate('/');
   };
- 
+
   const isDashboard = location.pathname === '/dashboard';
- 
+  const isSignInPage = location.pathname === '/signinadmin';  // ตรวจสอบว่าอยู่ในหน้า signinadmin หรือไม่
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -32,6 +53,7 @@ export default function Header() {
         }}
       >
         <Toolbar>
+          {/* โลโก้เว็บไซต์ */}
           <Box
             component="img"
             id="Logohome"
@@ -39,54 +61,66 @@ export default function Header() {
             alt="Logo"
             onClick={handleHomeClick}
             sx={{
-              height: 100,
-              width: 100,
+              height: 80,  // ขนาดโลโก้เล็กลง
+              width: 80,   // ขนาดโลโก้เล็กลง
               cursor: 'pointer',
+              borderRadius: '50%', // ให้เป็นรูปวงกลม
+              objectFit: 'cover',  // ให้ภาพพอดีกับกรอบ
+              border: '2px solid #fff', // กรอบสีขาวรอบๆ โลโก้
+              marginLeft: '20px',  // ขยับโลโก้มาทางขวา
             }}
           />
           <Box sx={{ flexGrow: 1 }} />
-          {isDashboard ? (
-            <Button
-              variant="contained"
-              color="secondary"
-              id="Logout"
-              sx={{
-                fontWeight: 'bold',
-                fontSize: '16px',
-                backgroundColor: '#FEFFDA',
-                borderRadius: '10px',
-                border: '1px solid #000',
-                color: '#000',
-                '&:hover': {
-                  backgroundColor: '#f5f5a0',
-                },
-              }}
-              onClick={handleLogoutClick}
-              aria-label="ออกจากระบบ"
-            >
-              ออกจากระบบ
-            </Button>
-          ) : (
-            <Button
-              variant="contained"
-              color="secondary"
-              id="Login"
-              sx={{
-                fontWeight: 'bold',
-                fontSize: '16px',
-                backgroundColor: '#FEFFDA',
-                borderRadius: '10px',
-                border: '1px solid #000',
-                color: '#000',
-                '&:hover': {
-                  backgroundColor: '#f5f5a0',
-                },
-              }}
-              onClick={handleSignInClick}
-              aria-label="เข้าสู่ระบบ"
-            >
-              เข้าสู่ระบบ
-            </Button>
+          {!isSignInPage && ( // ซ่อนปุ่มล็อกอินถ้าอยู่ในหน้า signinadmin
+            isDashboard ? (
+              <Button
+                variant="contained"
+                color="secondary"
+                id="Logout"
+                sx={{
+                  fontWeight: 'bold',
+                  fontSize: '16px',
+                  backgroundColor: '#FEFFDA',
+                  borderRadius: '10px',
+                  border: '2px solid #000',  // กรอบสีดำหนาขึ้น
+                  color: '#000',
+                  padding: '10px 20px',
+                  transition: 'transform 0.2s ease-in-out',  // เพิ่มเอฟเฟกต์การขยายเมื่อ hover
+                  '&:hover': {
+                    backgroundColor: '#ffcc80',
+                    transform: 'scale(1.05)',  // ขยายปุ่มเมื่อ hover
+                  },
+                }}
+                onClick={handleLogoutClick}
+                aria-label="ออกจากระบบ"
+              >
+                ออกจากระบบ
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                color="secondary"
+                id="Login"
+                sx={{
+                  fontWeight: 'bold',
+                  fontSize: '16px',
+                  backgroundColor: '#FEFFDA',
+                  borderRadius: '10px',
+                  border: '2px solid #000',  // กรอบสีดำหนาขึ้น
+                  color: '#000',
+                  padding: '10px 20px',  // ขยายปุ่มให้ดูน่ากดมากขึ้น
+                  transition: 'transform 0.2s ease-in-out',  // เพิ่มเอฟเฟกต์การขยายเมื่อ hover
+                  '&:hover': {
+                    backgroundColor: '#ffcc80',
+                    transform: 'scale(1.05)',  // ขยายปุ่มเมื่อ hover
+                  },
+                }}
+                onClick={handleSignInClick}
+                aria-label="เข้าสู่ระบบ"
+              >
+                เข้าสู่ระบบ
+              </Button>
+            )
           )}
         </Toolbar>
       </AppBar>
